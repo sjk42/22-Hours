@@ -562,6 +562,18 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonReleased
 {
 
 
+{
+{gdjs.evtTools.runtimeScene.replaceScene(runtimeScene, "Game Over", false);
+}}
+
+}
+
+
+};gdjs.GameCode.eventsList12 = function(runtimeScene) {
+
+{
+
+
 gdjs.GameCode.condition0IsTrue_0.val = false;
 gdjs.GameCode.condition1IsTrue_0.val = false;
 {
@@ -599,7 +611,7 @@ if (gdjs.GameCode.condition1IsTrue_0.val) {
 }
 
 
-};gdjs.GameCode.eventsList12 = function(runtimeScene) {
+};gdjs.GameCode.eventsList13 = function(runtimeScene) {
 
 {
 
@@ -640,7 +652,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.isKeyPressed(runtimeS
 }
 
 
-};gdjs.GameCode.eventsList13 = function(runtimeScene) {
+};gdjs.GameCode.eventsList14 = function(runtimeScene) {
 
 {
 
@@ -804,7 +816,7 @@ gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(7
 }
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {
-{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "assets\\Race-to-Mars.ogg", 1, true, 5, 1);
+{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "22-hours-soundtrack.ogg", 1, true, 5, 1);
 }}
 
 }
@@ -1498,9 +1510,11 @@ gdjs.copyArray(gdjs.GameCode.GDduckObjectObjects1_1final, gdjs.GameCode.GDduckOb
 }
 }
 }if (gdjs.GameCode.condition0IsTrue_0.val) {
-{gdjs.evtTools.runtimeScene.replaceScene(runtimeScene, "Game Over", false);
-}{runtimeScene.getGame().getVariables().getFromIndex(1).setNumber(1);
-}}
+{runtimeScene.getGame().getVariables().getFromIndex(1).setNumber(1);
+}
+{ //Subevents
+gdjs.GameCode.eventsList11(runtimeScene);} //End of subevents
+}
 
 }
 
@@ -1529,7 +1543,7 @@ if (gdjs.GameCode.condition1IsTrue_0.val) {
 {runtimeScene.getVariables().get("devFlag").setNumber(1);
 }
 { //Subevents
-gdjs.GameCode.eventsList11(runtimeScene);} //End of subevents
+gdjs.GameCode.eventsList12(runtimeScene);} //End of subevents
 }
 
 }
@@ -1572,7 +1586,7 @@ gdjs.copyArray(runtimeScene.getObjects("devLabel"), gdjs.GameCode.GDdevLabelObje
 }
 }
 { //Subevents
-gdjs.GameCode.eventsList12(runtimeScene);} //End of subevents
+gdjs.GameCode.eventsList13(runtimeScene);} //End of subevents
 }
 
 }
@@ -1697,7 +1711,7 @@ gdjs.GameCode.GDskipIntroButtonObjects2.length = 0;
 gdjs.GameCode.GDskipIntroButtonObjects3.length = 0;
 gdjs.GameCode.GDskipIntroButtonObjects4.length = 0;
 
-gdjs.GameCode.eventsList13(runtimeScene);
+gdjs.GameCode.eventsList14(runtimeScene);
 return;
 
 }

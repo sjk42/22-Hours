@@ -36,6 +36,19 @@ gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonRelea
 
 {
 
+
+gdjs.CreditsCode.condition0IsTrue_0.val = false;
+{
+gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.runtimeScene.sceneJustBegins(runtimeScene);
+}if (gdjs.CreditsCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, 100, 1);
+}}
+
+}
+
+
+{
+
 gdjs.copyArray(runtimeScene.getObjects("backButton"), gdjs.CreditsCode.GDbackButtonObjects1);
 
 gdjs.CreditsCode.condition0IsTrue_0.val = false;

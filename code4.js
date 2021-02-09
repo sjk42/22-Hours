@@ -41,6 +41,7 @@ gdjs.copyArray(runtimeScene.getObjects("scoreLabel"), gdjs.Game_32OverCode.GDsco
 {for(var i = 0, len = gdjs.Game_32OverCode.GDscoreLabelObjects1.length ;i < len;++i) {
     gdjs.Game_32OverCode.GDscoreLabelObjects1[i].setBBText("Score: " + gdjs.evtTools.common.getVariableString(runtimeScene.getGame().getVariables().getFromIndex(0)));
 }
+}{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, 100, 1);
 }}
 
 }
