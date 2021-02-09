@@ -6577,8 +6577,8 @@
           "name": "artLabel",
           "persistentUuid": "6f331260-cdf5-4fee-b18b-d1ff9145b0bb",
           "width": 242,
-          "x": 254,
-          "y": 415,
+          "x": 10,
+          "y": 330,
           "zOrder": 4,
           "numberProperties": [],
           "stringProperties": [],
@@ -6593,8 +6593,8 @@
           "name": "musicLabel",
           "persistentUuid": "8a9dd448-8645-4310-908f-32cee38ddafe",
           "width": 0,
-          "x": 193,
-          "y": 323,
+          "x": 345,
+          "y": 330,
           "zOrder": 5,
           "numberProperties": [],
           "stringProperties": [],
@@ -6609,7 +6609,7 @@
           "name": "devLabel",
           "persistentUuid": "25c436af-f932-4512-b176-1994e32dd864",
           "width": 0,
-          "x": 160,
+          "x": 154,
           "y": 223,
           "zOrder": 6,
           "numberProperties": [],
@@ -6680,7 +6680,7 @@
             "visible": true,
             "color": "#000000",
             "fontFamily": "assets\\FSEX300.ttf",
-            "align": "center",
+            "align": "left",
             "wordWrap": true
           }
         },
@@ -6697,7 +6697,7 @@
             "visible": true,
             "color": "#000000",
             "fontFamily": "assets\\FSEX300.ttf",
-            "align": "center",
+            "align": "left",
             "wordWrap": true
           }
         },
