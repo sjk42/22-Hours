@@ -849,6 +849,33 @@
         "name": "assets\\IDLE\\Anim_Idle_Frame_0007_8.png",
         "smoothed": true,
         "userAdded": false
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/SLIDE/Anim_Slide_Frame_0001_1.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "assets\\SLIDE\\Anim_Slide_Frame_0001_1.png",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/SLIDE/Anim_Slide_Frame_1.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "assets\\SLIDE\\Anim_Slide_Frame_1.png",
+        "smoothed": true,
+        "userAdded": false
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/SLIDE/Anim_Slide_Frame_2.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "assets\\SLIDE\\Anim_Slide_Frame_2.png",
+        "smoothed": true,
+        "userAdded": false
       }
     ],
     "resourceFolders": []
@@ -1428,7 +1455,7 @@
         "gridWidth": 32,
         "snap": false,
         "windowMask": false,
-        "zoomFactor": 0.58
+        "zoomFactor": 0.67
       },
       "objectsGroups": [],
       "variables": [
@@ -1826,6 +1853,22 @@
           "x": 3,
           "y": 457,
           "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "foreground layer",
+          "locked": false,
+          "name": "skipIntroButton",
+          "persistentUuid": "3a87d05b-32ba-473c-a8bb-1f14f2c2ab00",
+          "width": 0,
+          "x": 300,
+          "y": 545,
+          "zOrder": 24,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -2533,7 +2576,7 @@
                   "sprites": [
                     {
                       "hasCustomCollisionMask": true,
-                      "image": "assets\\SLIDE\\Anim_Slide_Frame_0000_1.png",
+                      "image": "assets\\SLIDE\\Anim_Slide_Frame_1.png",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -2550,11 +2593,11 @@
                         [
                           {
                             "x": 16,
-                            "y": 20
+                            "y": 22
                           },
                           {
                             "x": 48,
-                            "y": 20
+                            "y": 22
                           },
                           {
                             "x": 48,
@@ -2569,7 +2612,7 @@
                     },
                     {
                       "hasCustomCollisionMask": true,
-                      "image": "assets\\SLIDE\\Anim_Slide_Frame_0000_2.png",
+                      "image": "assets\\SLIDE\\Anim_Slide_Frame_2.png",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -2586,11 +2629,11 @@
                         [
                           {
                             "x": 16,
-                            "y": 20
+                            "y": 22
                           },
                           {
                             "x": 48,
-                            "y": 20
+                            "y": 22
                           },
                           {
                             "x": 48,
@@ -3112,6 +3155,23 @@
           "width": 32,
           "variables": [],
           "behaviors": []
+        },
+        {
+          "name": "skipIntroButton",
+          "tags": "",
+          "type": "BBText::BBText",
+          "variables": [],
+          "behaviors": [],
+          "content": {
+            "text": "Skip Intro",
+            "opacity": 255,
+            "fontSize": 40,
+            "visible": true,
+            "color": "#000000",
+            "fontFamily": "assets\\FSEX300.ttf",
+            "align": "left",
+            "wordWrap": true
+          }
         }
       ],
       "events": [
@@ -3356,6 +3416,16 @@
                 "0"
               ],
               "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Cache"
+              },
+              "parameters": [
+                "skipIntroButton"
+              ],
+              "subInstructions": []
             }
           ],
           "events": [
@@ -3381,12 +3451,13 @@
                 {
                   "type": {
                     "inverted": false,
-                    "value": "PlayMusic"
+                    "value": "PlayMusicCanal"
                   },
                   "parameters": [
                     "",
                     "assets\\intro_speech.mp3",
-                    "",
+                    "1",
+                    "no",
                     "20",
                     ""
                   ],
@@ -3414,11 +3485,171 @@
                     "3"
                   ],
                   "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Montre"
+                  },
+                  "parameters": [
+                    "skipIntroButton",
+                    ""
+                  ],
+                  "subInstructions": []
                 }
               ],
               "events": []
             }
           ]
+        },
+        {
+          "disabled": false,
+          "folded": false,
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "VarGlobal"
+              },
+              "parameters": [
+                "playIntroFlag",
+                "=",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SourisSurObjet"
+              },
+              "parameters": [
+                "skipIntroButton",
+                "",
+                "",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "BBText::SetFontSize"
+              },
+              "parameters": [
+                "skipIntroButton",
+                "=",
+                "45"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "disabled": false,
+              "folded": false,
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "MouseButtonReleased"
+                  },
+                  "parameters": [
+                    "",
+                    "Left"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ModVarGlobal"
+                  },
+                  "parameters": [
+                    "playIntroFlag",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StopMusicCanal"
+                  },
+                  "parameters": [
+                    "",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Cache"
+                  },
+                  "parameters": [
+                    "skipIntroButton"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
+        {
+          "disabled": false,
+          "folded": false,
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "VarGlobal"
+              },
+              "parameters": [
+                "playIntroFlag",
+                "=",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": true,
+                "value": "SourisSurObjet"
+              },
+              "parameters": [
+                "skipIntroButton",
+                "",
+                "",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "BBText::SetFontSize"
+              },
+              "parameters": [
+                "skipIntroButton",
+                "=",
+                "40"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
         },
         {
           "disabled": false,
@@ -3444,6 +3675,18 @@
               },
               "parameters": [],
               "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "VarGlobal"
+              },
+              "parameters": [
+                "playIntroFlag",
+                "=",
+                "1"
+              ],
+              "subInstructions": []
             }
           ],
           "actions": [
@@ -3456,6 +3699,16 @@
                 "playIntroFlag",
                 "=",
                 "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Cache"
+              },
+              "parameters": [
+                "skipIntroButton"
               ],
               "subInstructions": []
             }
@@ -3492,11 +3745,12 @@
             {
               "type": {
                 "inverted": false,
-                "value": "PlayMusic"
+                "value": "PlayMusicCanal"
               },
               "parameters": [
                 "",
                 "assets\\Race-to-Mars.ogg",
+                "1",
                 "yes",
                 "5",
                 ""
@@ -4287,7 +4541,7 @@
                     "",
                     "duckObject",
                     "750",
-                    "245",
+                    "240",
                     "\"Player layer\""
                   ],
                   "subInstructions": []
@@ -4467,7 +4721,7 @@
                     "",
                     "duckObject",
                     "750",
-                    "245",
+                    "240",
                     "\"Player layer\""
                   ],
                   "subInstructions": []
@@ -4532,6 +4786,18 @@
                 "value": "BuiltinCommonInstructions::Once"
               },
               "parameters": [],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "VarGlobal"
+              },
+              "parameters": [
+                "playIntroFlag",
+                "=",
+                "0"
+              ],
               "subInstructions": []
             }
           ],
@@ -4732,7 +4998,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "",
+          "comment": "Main menu button in game fuction",
           "comment2": ""
         },
         {
