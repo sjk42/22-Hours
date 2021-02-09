@@ -16,7 +16,7 @@
     "sizeOnStartupMode": "adaptWidth",
     "useExternalSourceFiles": false,
     "version": "1.0.0",
-    "name": "myGamePrototype",
+    "name": "22 Hours",
     "author": "",
     "windowWidth": 750,
     "windowHeight": 600,
@@ -1785,9 +1785,9 @@
           "variables": [],
           "behaviors": [
             {
-              "jumpSpeed": 400,
               "name": "PlatformerObject",
               "type": "PlatformBehavior::PlatformerObjectBehavior",
+              "jumpSpeed": 400,
               "acceleration": 1500,
               "canGrabPlatforms": false,
               "deceleration": 1500,
@@ -5333,9 +5333,9 @@
           "effects": []
         },
         {
-          "ambientLightColorB": 1702453580,
+          "ambientLightColorB": 1702453632,
           "ambientLightColorG": 7279784,
-          "ambientLightColorR": -2147483616,
+          "ambientLightColorR": -2147483648,
           "followBaseLayerCamera": false,
           "isLightingLayer": false,
           "name": "foreground layer",

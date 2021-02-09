@@ -54,6 +54,9 @@ gdjs.GameCode.GDscoreLabelObjects3= [];
 gdjs.GameCode.GDduckObjectObjects1= [];
 gdjs.GameCode.GDduckObjectObjects2= [];
 gdjs.GameCode.GDduckObjectObjects3= [];
+gdjs.GameCode.GDforegroundCoverObjects1= [];
+gdjs.GameCode.GDforegroundCoverObjects2= [];
+gdjs.GameCode.GDforegroundCoverObjects3= [];
 
 gdjs.GameCode.conditionTrue_0 = {val:false};
 gdjs.GameCode.condition0IsTrue_0 = {val:false};
@@ -831,7 +834,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.wasKeyReleased(runtim
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(7392996);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8378172);
 }
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {
@@ -1078,7 +1081,7 @@ gdjs.GameCode.condition1IsTrue_1.val = false;
 {
 gdjs.copyArray(runtimeScene.getObjects("Player"), gdjs.GameCode.GDPlayerObjects2);
 for(var i = 0, k = 0, l = gdjs.GameCode.GDPlayerObjects2.length;i<l;++i) {
-    if ( gdjs.GameCode.GDPlayerObjects2[i].getY() > 400 ) {
+    if ( gdjs.GameCode.GDPlayerObjects2[i].getY() > 380 ) {
         gdjs.GameCode.condition0IsTrue_1.val = true;
         gdjs.GameCode.GDPlayerObjects2[k] = gdjs.GameCode.GDPlayerObjects2[i];
         ++k;
@@ -1148,7 +1151,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.isKeyPressed(runtimeS
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(7876076);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8396260);
 }
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {
@@ -1288,6 +1291,9 @@ gdjs.GameCode.GDscoreLabelObjects3.length = 0;
 gdjs.GameCode.GDduckObjectObjects1.length = 0;
 gdjs.GameCode.GDduckObjectObjects2.length = 0;
 gdjs.GameCode.GDduckObjectObjects3.length = 0;
+gdjs.GameCode.GDforegroundCoverObjects1.length = 0;
+gdjs.GameCode.GDforegroundCoverObjects2.length = 0;
+gdjs.GameCode.GDforegroundCoverObjects3.length = 0;
 
 gdjs.GameCode.eventsList8(runtimeScene);
 return;
