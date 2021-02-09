@@ -17,7 +17,22 @@ gdjs.CreditsCode.condition0IsTrue_0 = {val:false};
 gdjs.CreditsCode.condition1IsTrue_0 = {val:false};
 
 
-gdjs.CreditsCode.mapOfGDgdjs_46CreditsCode_46GDbackButtonObjects1Objects = Hashtable.newFrom({"backButton": gdjs.CreditsCode.GDbackButtonObjects1});gdjs.CreditsCode.eventsList0 = function(runtimeScene) {
+gdjs.CreditsCode.eventsList0 = function(runtimeScene) {
+
+{
+
+
+gdjs.CreditsCode.condition0IsTrue_0.val = false;
+{
+gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(4)) == 1;
+}if (gdjs.CreditsCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.sound.setMusicOnChannelVolume(runtimeScene, 1, 0);
+}}
+
+}
+
+
+};gdjs.CreditsCode.mapOfGDgdjs_46CreditsCode_46GDbackButtonObjects1Objects = Hashtable.newFrom({"backButton": gdjs.CreditsCode.GDbackButtonObjects1});gdjs.CreditsCode.eventsList1 = function(runtimeScene) {
 
 {
 
@@ -32,7 +47,7 @@ gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonRelea
 }
 
 
-};gdjs.CreditsCode.mapOfGDgdjs_46CreditsCode_46GDbackButtonObjects1Objects = Hashtable.newFrom({"backButton": gdjs.CreditsCode.GDbackButtonObjects1});gdjs.CreditsCode.eventsList1 = function(runtimeScene) {
+};gdjs.CreditsCode.mapOfGDgdjs_46CreditsCode_46GDbackButtonObjects1Objects = Hashtable.newFrom({"backButton": gdjs.CreditsCode.GDbackButtonObjects1});gdjs.CreditsCode.eventsList2 = function(runtimeScene) {
 
 {
 
@@ -41,8 +56,11 @@ gdjs.CreditsCode.condition0IsTrue_0.val = false;
 {
 gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.runtimeScene.sceneJustBegins(runtimeScene);
 }if (gdjs.CreditsCode.condition0IsTrue_0.val) {
-{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, 100, 1);
-}}
+{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(3)), 1);
+}
+{ //Subevents
+gdjs.CreditsCode.eventsList0(runtimeScene);} //End of subevents
+}
 
 }
 
@@ -61,7 +79,7 @@ gdjs.CreditsCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject(gdj
 }
 }
 { //Subevents
-gdjs.CreditsCode.eventsList0(runtimeScene);} //End of subevents
+gdjs.CreditsCode.eventsList1(runtimeScene);} //End of subevents
 }
 
 }
@@ -102,7 +120,7 @@ gdjs.CreditsCode.GDartLabelObjects2.length = 0;
 gdjs.CreditsCode.GDdevLabelObjects1.length = 0;
 gdjs.CreditsCode.GDdevLabelObjects2.length = 0;
 
-gdjs.CreditsCode.eventsList1(runtimeScene);
+gdjs.CreditsCode.eventsList2(runtimeScene);
 return;
 
 }

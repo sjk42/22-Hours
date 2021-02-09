@@ -13,7 +13,22 @@ gdjs.Main_32MenuCode.condition0IsTrue_0 = {val:false};
 gdjs.Main_32MenuCode.condition1IsTrue_0 = {val:false};
 
 
-gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDplayButtonObjects1Objects = Hashtable.newFrom({"playButton": gdjs.Main_32MenuCode.GDplayButtonObjects1});gdjs.Main_32MenuCode.eventsList0 = function(runtimeScene) {
+gdjs.Main_32MenuCode.eventsList0 = function(runtimeScene) {
+
+{
+
+
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = false;
+{
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(4)) == 1;
+}if (gdjs.Main_32MenuCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.sound.setMusicOnChannelVolume(runtimeScene, 1, 0);
+}}
+
+}
+
+
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDplayButtonObjects1Objects = Hashtable.newFrom({"playButton": gdjs.Main_32MenuCode.GDplayButtonObjects1});gdjs.Main_32MenuCode.eventsList1 = function(runtimeScene) {
 
 {
 
@@ -28,7 +43,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDplayButtonObjects1Objects = Hashtable.newFrom({"playButton": gdjs.Main_32MenuCode.GDplayButtonObjects1});gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDsettingsButtonObjects1Objects = Hashtable.newFrom({"settingsButton": gdjs.Main_32MenuCode.GDsettingsButtonObjects1});gdjs.Main_32MenuCode.eventsList1 = function(runtimeScene) {
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDplayButtonObjects1Objects = Hashtable.newFrom({"playButton": gdjs.Main_32MenuCode.GDplayButtonObjects1});gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDsettingsButtonObjects1Objects = Hashtable.newFrom({"settingsButton": gdjs.Main_32MenuCode.GDsettingsButtonObjects1});gdjs.Main_32MenuCode.eventsList2 = function(runtimeScene) {
 
 {
 
@@ -43,7 +58,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDsettingsButtonObjects1Objects = Hashtable.newFrom({"settingsButton": gdjs.Main_32MenuCode.GDsettingsButtonObjects1});gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.eventsList2 = function(runtimeScene) {
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDsettingsButtonObjects1Objects = Hashtable.newFrom({"settingsButton": gdjs.Main_32MenuCode.GDsettingsButtonObjects1});gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.eventsList3 = function(runtimeScene) {
 
 {
 
@@ -58,7 +73,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.eventsList3 = function(runtimeScene) {
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.eventsList4 = function(runtimeScene) {
 
 {
 
@@ -68,8 +83,11 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = false;
 gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.runtimeScene.sceneJustBegins(runtimeScene);
 }if (gdjs.Main_32MenuCode.condition0IsTrue_0.val) {
 {runtimeScene.getGame().getVariables().getFromIndex(0).setNumber(0);
-}{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, 100, 1);
-}}
+}{gdjs.evtTools.sound.playMusicOnChannel(runtimeScene, "menu-music.ogg", 1, true, gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(3)), 1);
+}
+{ //Subevents
+gdjs.Main_32MenuCode.eventsList0(runtimeScene);} //End of subevents
+}
 
 }
 
@@ -88,7 +106,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Main_32MenuCode.eventsList0(runtimeScene);} //End of subevents
+gdjs.Main_32MenuCode.eventsList1(runtimeScene);} //End of subevents
 }
 
 }
@@ -125,7 +143,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Main_32MenuCode.eventsList1(runtimeScene);} //End of subevents
+gdjs.Main_32MenuCode.eventsList2(runtimeScene);} //End of subevents
 }
 
 }
@@ -162,7 +180,7 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Main_32MenuCode.eventsList2(runtimeScene);} //End of subevents
+gdjs.Main_32MenuCode.eventsList3(runtimeScene);} //End of subevents
 }
 
 }
@@ -199,7 +217,7 @@ gdjs.Main_32MenuCode.GDsettingsButtonObjects2.length = 0;
 gdjs.Main_32MenuCode.GDplayButtonObjects1.length = 0;
 gdjs.Main_32MenuCode.GDplayButtonObjects2.length = 0;
 
-gdjs.Main_32MenuCode.eventsList3(runtimeScene);
+gdjs.Main_32MenuCode.eventsList4(runtimeScene);
 return;
 
 }
