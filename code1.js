@@ -2049,6 +2049,7 @@ gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {
 {runtimeScene.getVariables().get("devFlag").setNumber(1);
+}{runtimeScene.getGame().getVariables().getFromIndex(5).setNumber(1);
 }
 { //Subevents
 gdjs.GameCode.eventsList13(runtimeScene);} //End of subevents

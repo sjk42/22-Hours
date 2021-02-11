@@ -23,11 +23,13 @@ gdjs.Game_32OverCode.condition0IsTrue_0 = {val:false};
 gdjs.Game_32OverCode.condition1IsTrue_0 = {val:false};
 gdjs.Game_32OverCode.condition2IsTrue_0 = {val:false};
 gdjs.Game_32OverCode.condition3IsTrue_0 = {val:false};
+gdjs.Game_32OverCode.condition4IsTrue_0 = {val:false};
 gdjs.Game_32OverCode.conditionTrue_1 = {val:false};
 gdjs.Game_32OverCode.condition0IsTrue_1 = {val:false};
 gdjs.Game_32OverCode.condition1IsTrue_1 = {val:false};
 gdjs.Game_32OverCode.condition2IsTrue_1 = {val:false};
 gdjs.Game_32OverCode.condition3IsTrue_1 = {val:false};
+gdjs.Game_32OverCode.condition4IsTrue_1 = {val:false};
 
 
 gdjs.Game_32OverCode.eventsList0 = function(runtimeScene) {
@@ -75,7 +77,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x6fabc0 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x78bca8 = function(runtimeScene) {
 "use strict";
 
 var db = firebase.database();
@@ -97,7 +99,7 @@ gdjs.Game_32OverCode.eventsList3 = function(runtimeScene) {
 {
 
 
-gdjs.Game_32OverCode.userFunc0x6fabc0(runtimeScene);
+gdjs.Game_32OverCode.userFunc0x78bca8(runtimeScene);
 
 }
 
@@ -111,6 +113,7 @@ gdjs.Game_32OverCode.userFunc0x6fabc0(runtimeScene);
 gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
 gdjs.Game_32OverCode.condition1IsTrue_0.val = false;
 gdjs.Game_32OverCode.condition2IsTrue_0.val = false;
+gdjs.Game_32OverCode.condition3IsTrue_0.val = false;
 {
 gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonReleased(runtimeScene, "Left");
 }if ( gdjs.Game_32OverCode.condition0IsTrue_0.val ) {
@@ -127,9 +130,13 @@ gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1.length = k;}if ( gdjs.Game_32Ov
 {gdjs.Game_32OverCode.conditionTrue_1 = gdjs.Game_32OverCode.condition2IsTrue_0;
 gdjs.Game_32OverCode.conditionTrue_1.val = (gdjs.evtTools.string.strLen(gdjs.evtTools.common.getVariableString(runtimeScene.getVariables().getFromIndex(2))) == 3);
 }
+}if ( gdjs.Game_32OverCode.condition2IsTrue_0.val ) {
+{
+gdjs.Game_32OverCode.condition3IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(5)) == 0;
 }}
 }
-if (gdjs.Game_32OverCode.condition2IsTrue_0.val) {
+}
+if (gdjs.Game_32OverCode.condition3IsTrue_0.val) {
 /* Reuse gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1 */
 gdjs.copyArray(runtimeScene.getObjects("submittedLabel"), gdjs.Game_32OverCode.GDsubmittedLabelObjects1);
 {runtimeScene.getVariables().getFromIndex(0).add(1);
