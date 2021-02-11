@@ -1,6 +1,8 @@
 gdjs.Game_32OverCode = {};
 gdjs.Game_32OverCode.GDbackgroundObjects1= [];
 gdjs.Game_32OverCode.GDbackgroundObjects2= [];
+gdjs.Game_32OverCode.GDplayAgainButtonObjects1= [];
+gdjs.Game_32OverCode.GDplayAgainButtonObjects2= [];
 gdjs.Game_32OverCode.GDmainMenuButtonObjects1= [];
 gdjs.Game_32OverCode.GDmainMenuButtonObjects2= [];
 gdjs.Game_32OverCode.GDgameOverLabelObjects1= [];
@@ -43,7 +45,22 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.eventsList2 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.eventsList2 = function(runtimeScene) {
+
+{
+
+
+gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
+{
+gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonReleased(runtimeScene, "Left");
+}if (gdjs.Game_32OverCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.runtimeScene.replaceScene(runtimeScene, "Game", false);
+}}
+
+}
+
+
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.eventsList3 = function(runtimeScene) {
 
 {
 
@@ -102,6 +119,43 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 
 
+{
+
+gdjs.copyArray(runtimeScene.getObjects("playAgainButton"), gdjs.Game_32OverCode.GDplayAgainButtonObjects1);
+
+gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
+{
+gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject(gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects, runtimeScene, true, false);
+}if (gdjs.Game_32OverCode.condition0IsTrue_0.val) {
+/* Reuse gdjs.Game_32OverCode.GDplayAgainButtonObjects1 */
+{for(var i = 0, len = gdjs.Game_32OverCode.GDplayAgainButtonObjects1.length ;i < len;++i) {
+    gdjs.Game_32OverCode.GDplayAgainButtonObjects1[i].setFontSize(75);
+}
+}
+{ //Subevents
+gdjs.Game_32OverCode.eventsList2(runtimeScene);} //End of subevents
+}
+
+}
+
+
+{
+
+gdjs.copyArray(runtimeScene.getObjects("playAgainButton"), gdjs.Game_32OverCode.GDplayAgainButtonObjects1);
+
+gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
+{
+gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject(gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects, runtimeScene, true, true);
+}if (gdjs.Game_32OverCode.condition0IsTrue_0.val) {
+/* Reuse gdjs.Game_32OverCode.GDplayAgainButtonObjects1 */
+{for(var i = 0, len = gdjs.Game_32OverCode.GDplayAgainButtonObjects1.length ;i < len;++i) {
+    gdjs.Game_32OverCode.GDplayAgainButtonObjects1[i].setFontSize(60);
+}
+}}
+
+}
+
+
 };
 
 gdjs.Game_32OverCode.func = function(runtimeScene) {
@@ -109,6 +163,8 @@ runtimeScene.getOnceTriggers().startNewFrame();
 
 gdjs.Game_32OverCode.GDbackgroundObjects1.length = 0;
 gdjs.Game_32OverCode.GDbackgroundObjects2.length = 0;
+gdjs.Game_32OverCode.GDplayAgainButtonObjects1.length = 0;
+gdjs.Game_32OverCode.GDplayAgainButtonObjects2.length = 0;
 gdjs.Game_32OverCode.GDmainMenuButtonObjects1.length = 0;
 gdjs.Game_32OverCode.GDmainMenuButtonObjects2.length = 0;
 gdjs.Game_32OverCode.GDgameOverLabelObjects1.length = 0;
@@ -116,7 +172,7 @@ gdjs.Game_32OverCode.GDgameOverLabelObjects2.length = 0;
 gdjs.Game_32OverCode.GDscoreLabelObjects1.length = 0;
 gdjs.Game_32OverCode.GDscoreLabelObjects2.length = 0;
 
-gdjs.Game_32OverCode.eventsList2(runtimeScene);
+gdjs.Game_32OverCode.eventsList3(runtimeScene);
 return;
 
 }

@@ -214,7 +214,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonPressed(
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8961932);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8952404);
 }
 }if ( gdjs.GameCode.condition1IsTrue_0.val ) {
 {
@@ -385,7 +385,7 @@ gdjs.GameCode.conditionTrue_1.val = (gdjs.evtTools.common.getVariableNumber(runt
 }if (gdjs.GameCode.condition0IsTrue_0.val) {
 gdjs.GameCode.GDbreakableObjectObjects3.length = 0;
 
-{gdjs.evtTools.object.createObjectOnScene((typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : runtimeScene), gdjs.GameCode.mapOfGDgdjs_46GameCode_46GDbreakableObjectObjects3Objects, 750, 290, "Player layer");
+{gdjs.evtTools.object.createObjectOnScene((typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : runtimeScene), gdjs.GameCode.mapOfGDgdjs_46GameCode_46GDbreakableObjectObjects3Objects, 875, 290, "Player layer");
 }}
 
 }
@@ -1005,7 +1005,7 @@ gdjs.GameCode.condition2IsTrue_0.val = !(gdjs.evtTools.sound.isMusicOnChannelPla
 }if ( gdjs.GameCode.condition2IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition3IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8971780);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8945132);
 }
 }}
 }
@@ -1034,7 +1034,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(ru
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8848892);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8952908);
 }
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {
@@ -1566,7 +1566,7 @@ for(var i = 0, k = 0, l = gdjs.GameCode.GDbreakableObjectObjects1.length;i<l;++i
 gdjs.GameCode.GDbreakableObjectObjects1.length = k;}if ( gdjs.GameCode.condition1IsTrue_0.val ) {
 {
 for(var i = 0, k = 0, l = gdjs.GameCode.GDPlayerObjects1.length;i<l;++i) {
-    if ( gdjs.GameCode.GDPlayerObjects1[i].getAnimationFrame() >= 4 ) {
+    if ( gdjs.GameCode.GDPlayerObjects1[i].getAnimationFrame() >= 2 ) {
         gdjs.GameCode.condition2IsTrue_0.val = true;
         gdjs.GameCode.GDPlayerObjects1[k] = gdjs.GameCode.GDPlayerObjects1[i];
         ++k;
@@ -1602,7 +1602,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.wasKeyReleased(runtim
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8965772);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8754620);
 }
 }if ( gdjs.GameCode.condition1IsTrue_0.val ) {
 {
@@ -2066,7 +2066,7 @@ gdjs.GameCode.condition0IsTrue_0.val = gdjs.evtTools.input.isKeyPressed(runtimeS
 }if ( gdjs.GameCode.condition0IsTrue_0.val ) {
 {
 {gdjs.GameCode.conditionTrue_1 = gdjs.GameCode.condition1IsTrue_0;
-gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(7710028);
+gdjs.GameCode.conditionTrue_1.val = runtimeScene.getOnceTriggers().triggerOnce(8695020);
 }
 }}
 if (gdjs.GameCode.condition1IsTrue_0.val) {

@@ -7,6 +7,8 @@ gdjs.Main_32MenuCode.GDsettingsButtonObjects1= [];
 gdjs.Main_32MenuCode.GDsettingsButtonObjects2= [];
 gdjs.Main_32MenuCode.GDplayButtonObjects1= [];
 gdjs.Main_32MenuCode.GDplayButtonObjects2= [];
+gdjs.Main_32MenuCode.GDleaderboardButtonObjects1= [];
+gdjs.Main_32MenuCode.GDleaderboardButtonObjects2= [];
 
 gdjs.Main_32MenuCode.conditionTrue_0 = {val:false};
 gdjs.Main_32MenuCode.condition0IsTrue_0 = {val:false};
@@ -73,7 +75,22 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.eventsList4 = function(runtimeScene) {
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDcreditsButtonObjects1Objects = Hashtable.newFrom({"creditsButton": gdjs.Main_32MenuCode.GDcreditsButtonObjects1});gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDleaderboardButtonObjects1Objects = Hashtable.newFrom({"leaderboardButton": gdjs.Main_32MenuCode.GDleaderboardButtonObjects1});gdjs.Main_32MenuCode.eventsList4 = function(runtimeScene) {
+
+{
+
+
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = false;
+{
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonReleased(runtimeScene, "Left");
+}if (gdjs.Main_32MenuCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.runtimeScene.replaceScene(runtimeScene, "Leaderboards", true);
+}}
+
+}
+
+
+};gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDleaderboardButtonObjects1Objects = Hashtable.newFrom({"leaderboardButton": gdjs.Main_32MenuCode.GDleaderboardButtonObjects1});gdjs.Main_32MenuCode.eventsList5 = function(runtimeScene) {
 
 {
 
@@ -203,6 +220,52 @@ gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 
 
+{
+
+gdjs.copyArray(runtimeScene.getObjects("leaderboardButton"), gdjs.Main_32MenuCode.GDleaderboardButtonObjects1);
+
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = false;
+{
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject(gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDleaderboardButtonObjects1Objects, runtimeScene, true, false);
+}if (gdjs.Main_32MenuCode.condition0IsTrue_0.val) {
+/* Reuse gdjs.Main_32MenuCode.GDleaderboardButtonObjects1 */
+{for(var i = 0, len = gdjs.Main_32MenuCode.GDleaderboardButtonObjects1.length ;i < len;++i) {
+    gdjs.Main_32MenuCode.GDleaderboardButtonObjects1[i].setFontSize(75);
+}
+}
+{ //Subevents
+gdjs.Main_32MenuCode.eventsList4(runtimeScene);} //End of subevents
+}
+
+}
+
+
+{
+
+gdjs.copyArray(runtimeScene.getObjects("leaderboardButton"), gdjs.Main_32MenuCode.GDleaderboardButtonObjects1);
+
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = false;
+{
+gdjs.Main_32MenuCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject(gdjs.Main_32MenuCode.mapOfGDgdjs_46Main_9532MenuCode_46GDleaderboardButtonObjects1Objects, runtimeScene, true, true);
+}if (gdjs.Main_32MenuCode.condition0IsTrue_0.val) {
+/* Reuse gdjs.Main_32MenuCode.GDleaderboardButtonObjects1 */
+{for(var i = 0, len = gdjs.Main_32MenuCode.GDleaderboardButtonObjects1.length ;i < len;++i) {
+    gdjs.Main_32MenuCode.GDleaderboardButtonObjects1[i].setFontSize(60);
+}
+}}
+
+}
+
+
+{
+
+
+{
+}
+
+}
+
+
 };
 
 gdjs.Main_32MenuCode.func = function(runtimeScene) {
@@ -216,8 +279,10 @@ gdjs.Main_32MenuCode.GDsettingsButtonObjects1.length = 0;
 gdjs.Main_32MenuCode.GDsettingsButtonObjects2.length = 0;
 gdjs.Main_32MenuCode.GDplayButtonObjects1.length = 0;
 gdjs.Main_32MenuCode.GDplayButtonObjects2.length = 0;
+gdjs.Main_32MenuCode.GDleaderboardButtonObjects1.length = 0;
+gdjs.Main_32MenuCode.GDleaderboardButtonObjects2.length = 0;
 
-gdjs.Main_32MenuCode.eventsList4(runtimeScene);
+gdjs.Main_32MenuCode.eventsList5(runtimeScene);
 return;
 
 }
