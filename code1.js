@@ -1984,6 +1984,7 @@ gdjs.copyArray(runtimeScene.getObjects("breakableObject"), gdjs.GameCode.GDbreak
 {gdjs.GameCode.conditionTrue_2 = gdjs.GameCode.condition5IsTrue_1;
 gdjs.GameCode.condition0IsTrue_2.val = false;
 gdjs.GameCode.condition1IsTrue_2.val = false;
+gdjs.GameCode.condition2IsTrue_2.val = false;
 {
 gdjs.GameCode.condition0IsTrue_2.val = gdjs.evtTools.object.hitBoxesCollisionTest(gdjs.GameCode.mapOfGDgdjs_46GameCode_46GDPlayerObjects2Objects, gdjs.GameCode.mapOfGDgdjs_46GameCode_46GDbreakableObjectObjects2Objects, false, runtimeScene, false);
 }if ( gdjs.GameCode.condition0IsTrue_2.val ) {
@@ -1995,8 +1996,12 @@ for(var i = 0, k = 0, l = gdjs.GameCode.GDbreakableObjectObjects2.length;i<l;++i
         ++k;
     }
 }
-gdjs.GameCode.GDbreakableObjectObjects2.length = k;}}
-gdjs.GameCode.conditionTrue_2.val = true && gdjs.GameCode.condition0IsTrue_2.val && gdjs.GameCode.condition1IsTrue_2.val;
+gdjs.GameCode.GDbreakableObjectObjects2.length = k;}if ( gdjs.GameCode.condition1IsTrue_2.val ) {
+{
+gdjs.GameCode.condition2IsTrue_2.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getVariables().getFromIndex(10)) == 0;
+}}
+}
+gdjs.GameCode.conditionTrue_2.val = true && gdjs.GameCode.condition0IsTrue_2.val && gdjs.GameCode.condition1IsTrue_2.val && gdjs.GameCode.condition2IsTrue_2.val;
 }
 if( gdjs.GameCode.condition5IsTrue_1.val ) {
     gdjs.GameCode.conditionTrue_1.val = true;

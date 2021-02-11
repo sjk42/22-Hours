@@ -77,7 +77,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x78bca8 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x759ab8 = function(runtimeScene) {
 "use strict";
 
 var db = firebase.database();
@@ -99,7 +99,7 @@ gdjs.Game_32OverCode.eventsList3 = function(runtimeScene) {
 {
 
 
-gdjs.Game_32OverCode.userFunc0x78bca8(runtimeScene);
+gdjs.Game_32OverCode.userFunc0x759ab8(runtimeScene);
 
 }
 

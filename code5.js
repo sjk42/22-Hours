@@ -17,7 +17,7 @@ gdjs.LeaderboardsCode.condition0IsTrue_0 = {val:false};
 gdjs.LeaderboardsCode.condition1IsTrue_0 = {val:false};
 
 
-gdjs.LeaderboardsCode.userFunc0x6c9f68 = function(runtimeScene) {
+gdjs.LeaderboardsCode.userFunc0x7983a0 = function(runtimeScene) {
 "use strict";
 //init db
 var db = firebase.database();
@@ -93,7 +93,7 @@ gdjs.LeaderboardsCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableN
 {
 
 
-gdjs.LeaderboardsCode.userFunc0x6c9f68(runtimeScene);
+gdjs.LeaderboardsCode.userFunc0x7983a0(runtimeScene);
 
 }
 
