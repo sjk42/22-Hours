@@ -4,26 +4,21 @@ var gdjs;
     constructor(runtimeScene, behaviorData, owner) {
       super(runtimeScene, behaviorData, owner);
       this._ignoreTouchingEdges = true;
-      this._isOnFloor = false;
-      this._isOnLadder = false;
-      this._floorPlatform = null;
       this._currentFallSpeed = 0;
       this._currentSpeed = 0;
-      this._jumping = false;
-      this._currentJumpSpeed = 0;
-      this._timeSinceCurrentJumpStart = 0;
-      this._jumpKeyHeldSinceJumpStart = false;
       this._canJump = false;
-      this._isGrabbingPlatform = false;
-      this._grabbedPlatform = null;
       this._leftKey = false;
       this._rightKey = false;
       this._ladderKey = false;
       this._upKey = false;
       this._downKey = false;
       this._jumpKey = false;
-      this._oldHeight = 0;
+      this._releaseKey = false;
       this._hasReallyMoved = false;
+      this._slopeClimbingFactor = 1;
+      this._requestedDeltaX = 0;
+      this._requestedDeltaY = 0;
+      this._lastDeltaY = 0;
       this._roundCoordinates = behaviorData.roundCoordinates;
       this._gravity = behaviorData.gravity;
       this._maxFallingSpeed = behaviorData.maxFallingSpeed;
@@ -42,6 +37,12 @@ var gdjs;
       this._slopeMaxAngle = 0;
       this.setSlopeMaxAngle(behaviorData.slopeMaxAngle);
       this._manager = gdjs2.PlatformObjectsManager.getManager(runtimeScene);
+      this._falling = new Falling(this);
+      this._onFloor = new OnFloor(this);
+      this._jumping = new Jumping(this);
+      this._grabbingPlatform = new GrabbingPlatform(this);
+      this._onLadder = new OnLadder(this);
+      this._state = this._falling;
     }
     updateFromBehaviorData(oldBehaviorData, newBehaviorData) {
       if (oldBehaviorData.roundCoordinates !== newBehaviorData.roundCoordinates) {
@@ -89,17 +90,56 @@ var gdjs;
       const SPACEKEY = 32;
       const object = this.owner;
       const timeDelta = this.owner.getElapsedTime(runtimeScene) / 1e3;
-      let requestedDeltaX = 0;
-      let requestedDeltaY = 0;
-      this._leftKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(LEFTKEY);
-      this._rightKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(RIGHTKEY);
+      this._requestedDeltaX = 0;
+      this._requestedDeltaY = 0;
+      const inputManager = runtimeScene.getGame().getInputManager();
+      this._leftKey || (this._leftKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(LEFTKEY));
+      this._rightKey || (this._rightKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(RIGHTKEY));
+      this._jumpKey || (this._jumpKey = !this._ignoreDefaultControls && (inputManager.isKeyPressed(LSHIFTKEY) || inputManager.isKeyPressed(RSHIFTKEY) || inputManager.isKeyPressed(SPACEKEY)));
+      this._ladderKey || (this._ladderKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(UPKEY));
+      this._upKey || (this._upKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(UPKEY));
+      this._downKey || (this._downKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(DOWNKEY));
+      this._releaseKey || (this._releaseKey = !this._ignoreDefaultControls && inputManager.isKeyPressed(DOWNKEY));
+      this._requestedDeltaX += this._updateSpeed(timeDelta);
+      this._state.beforeUpdatingObstacles();
+      this._onFloor._oldHeight = object.getHeight();
+      this._updatePotentialCollidingObjects(Math.max(this._requestedDeltaX, this._maxFallingSpeed * timeDelta));
+      this._updateOverlappedJumpThru();
+      this._state.checkTransitionBeforeX();
+      this._state.beforeMovingX();
+      if (this._separateFromPlatforms(this._potentialCollidingObjects, true)) {
+        this._canJump = true;
+      }
+      const oldX = object.getX();
+      this._moveX();
+      this._state.checkTransitionBeforeY(timeDelta);
+      this._state.beforeMovingY(timeDelta, oldX);
+      const oldY = object.getY();
+      this._moveY();
+      this._updateOverlappedJumpThru();
+      if (this._state !== this._onLadder) {
+        this._checkTransitionOnFloorOrFalling();
+      }
+      this._leftKey = false;
+      this._rightKey = false;
+      this._ladderKey = false;
+      this._upKey = false;
+      this._downKey = false;
+      this._releaseKey = false;
+      this._jumpKey = false;
+      this._hasReallyMoved = Math.abs(object.getX() - oldX) >= 1;
+      this._lastDeltaY = object.getY() - oldY;
+    }
+    doStepPostEvents(runtimeScene) {
+    }
+    _updateSpeed(timeDelta) {
       if (this._leftKey) {
         this._currentSpeed -= this._acceleration * timeDelta;
       }
       if (this._rightKey) {
         this._currentSpeed += this._acceleration * timeDelta;
       }
-      if (this._leftKey == this._rightKey) {
+      if (this._leftKey === this._rightKey) {
         const wasPositive = this._currentSpeed > 0;
         this._currentSpeed -= this._deceleration * timeDelta * (wasPositive ? 1 : -1);
         if (wasPositive && this._currentSpeed < 0) {
@@ -115,42 +155,21 @@ var gdjs;
       if (this._currentSpeed < -this._maxSpeed) {
         this._currentSpeed = -this._maxSpeed;
       }
-      requestedDeltaX += this._currentSpeed * timeDelta;
-      if (this._isOnFloor && this._oldHeight !== object.getHeight()) {
-        object.setY(this._floorLastY - object.getHeight() + (object.getY() - object.getDrawableY()) - 1);
-      }
-      this._oldHeight = object.getHeight();
-      this._updatePotentialCollidingObjects(Math.max(requestedDeltaX, this._maxFallingSpeed * timeDelta));
-      this._updateOverlappedJumpThru();
-      if (this._isOnFloor && !this._isIn(this._potentialCollidingObjects, this._floorPlatform.owner.id)) {
-        this._isOnFloor = false;
-        this._floorPlatform = null;
-      }
-      if (this._isGrabbingPlatform && !this._isIn(this._potentialCollidingObjects, this._grabbedPlatform.owner.id)) {
-        this._releaseGrabbedPlatform();
-      }
-      if (this._isOnFloor) {
-        requestedDeltaX += this._floorPlatform.owner.getX() - this._floorLastX;
-        requestedDeltaY += this._floorPlatform.owner.getY() - this._floorLastY;
-      }
-      if (this._isGrabbingPlatform) {
-        requestedDeltaX = this._grabbedPlatform.owner.getX() - this._grabbedPlatformLastX;
-        requestedDeltaY = this._grabbedPlatform.owner.getY() - this._grabbedPlatformLastY;
-      }
-      if (this._separateFromPlatforms(this._potentialCollidingObjects, true)) {
-        this._canJump = true;
-      }
+      return this._currentSpeed * timeDelta;
+    }
+    _moveX() {
+      const object = this.owner;
       const oldX = object.getX();
-      if (requestedDeltaX !== 0) {
-        const floorPlatformId = this._floorPlatform !== null ? this._floorPlatform.owner.id : null;
-        object.setX(object.getX() + requestedDeltaX);
+      if (this._requestedDeltaX !== 0) {
+        const floorPlatformId = this._onFloor.getFloorPlatform() !== null ? this._onFloor.getFloorPlatform().owner.id : null;
+        object.setX(object.getX() + this._requestedDeltaX);
         let tryRounding = true;
         while (this._isCollidingWith(this._potentialCollidingObjects, floorPlatformId, true)) {
-          if (requestedDeltaX > 0 && object.getX() <= oldX || requestedDeltaX < 0 && object.getX() >= oldX) {
+          if (this._requestedDeltaX > 0 && object.getX() <= oldX || this._requestedDeltaX < 0 && object.getX() >= oldX) {
             object.setX(oldX);
             break;
           }
-          if (this._isOnFloor) {
+          if (this._state === this._onFloor) {
             object.setY(object.getY() - 1);
             if (!this._isCollidingWith(this._potentialCollidingObjects, floorPlatformId, true)) {
               break;
@@ -161,201 +180,120 @@ var gdjs;
             object.setX(Math.round(object.getX()));
             tryRounding = false;
           } else {
-            object.setX(Math.round(object.getX()) + (requestedDeltaX > 0 ? -1 : 1));
+            object.setX(Math.round(object.getX()) + (this._requestedDeltaX > 0 ? -1 : 1));
           }
           this._currentSpeed = 0;
         }
       }
-      this._ladderKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(UPKEY);
-      if (this._ladderKey && this._isOverlappingLadder()) {
-        this._canJump = true;
-        this._isOnFloor = false;
-        this._floorPlatform = null;
-        this._currentJumpSpeed = 0;
-        this._currentFallSpeed = 0;
-        this._isOnLadder = true;
-      }
-      if (this._isOnLadder) {
-        this._upKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(UPKEY);
-        this._downKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(DOWNKEY);
-        if (this._upKey) {
-          requestedDeltaY -= this._ladderClimbingSpeed * timeDelta;
-        }
-        if (this._downKey) {
-          requestedDeltaY += this._ladderClimbingSpeed * timeDelta;
-        }
-        if (!this._isOverlappingLadder()) {
-          this._isOnLadder = false;
-        }
-      }
-      if (!this._isOnFloor && !this._isOnLadder && !this._isGrabbingPlatform) {
-        this._currentFallSpeed += this._gravity * timeDelta;
-        if (this._currentFallSpeed > this._maxFallingSpeed) {
-          this._currentFallSpeed = this._maxFallingSpeed;
-        }
-        requestedDeltaY += this._currentFallSpeed * timeDelta;
-        requestedDeltaY = Math.min(requestedDeltaY, this._maxFallingSpeed * timeDelta);
-      }
-      if (this._canGrabPlatforms && requestedDeltaX !== 0 && !this._isOnLadder && !this._isOnFloor) {
-        let tryGrabbingPlatform = false;
-        object.setX(object.getX() + (requestedDeltaX > 0 ? this._xGrabTolerance : -this._xGrabTolerance));
-        let collidingPlatform = this._getCollidingPlatform();
-        if (collidingPlatform !== null && this._canGrab(collidingPlatform, requestedDeltaY)) {
-          tryGrabbingPlatform = true;
-        }
-        object.setX(object.getX() + (requestedDeltaX > 0 ? -this._xGrabTolerance : this._xGrabTolerance));
-        if (tryGrabbingPlatform) {
-          let oldY = object.getY();
-          object.setY(collidingPlatform.owner.getY() + collidingPlatform.getYGrabOffset() - this._yGrabOffset);
-          if (!this._isCollidingWith(this._potentialCollidingObjects, null, true)) {
-            this._isGrabbingPlatform = true;
-            this._grabbedPlatform = collidingPlatform;
-            requestedDeltaY = 0;
-          } else {
-            object.setY(oldY);
-          }
-        }
-      }
-      this._releaseKey |= !this._ignoreDefaultControls && runtimeScene.getGame().getInputManager().isKeyPressed(DOWNKEY);
-      if (this._isGrabbingPlatform && !this._releaseKey) {
-        this._canJump = true;
-        this._currentJumpSpeed = 0;
-        this._currentFallSpeed = 0;
-        this._grabbedPlatformLastX = this._grabbedPlatform.owner.getX();
-        this._grabbedPlatformLastY = this._grabbedPlatform.owner.getY();
-      }
-      if (this._releaseKey) {
-        this._releaseGrabbedPlatform();
-      }
-      this._jumpKey |= !this._ignoreDefaultControls && (runtimeScene.getGame().getInputManager().isKeyPressed(LSHIFTKEY) || runtimeScene.getGame().getInputManager().isKeyPressed(RSHIFTKEY) || runtimeScene.getGame().getInputManager().isKeyPressed(SPACEKEY));
-      if (this._canJump && this._jumpKey) {
-        this._jumping = true;
-        this._canJump = false;
-        this._timeSinceCurrentJumpStart = 0;
-        this._jumpKeyHeldSinceJumpStart = true;
-        this._isOnLadder = false;
-        this._currentJumpSpeed = this._jumpSpeed;
-        this._currentFallSpeed = 0;
-        this._isGrabbingPlatform = false;
-      }
-      if (!this._jumpKey) {
-        this._jumpKeyHeldSinceJumpStart = false;
-      }
-      if (this._jumping) {
-        this._timeSinceCurrentJumpStart += timeDelta;
-        requestedDeltaY -= this._currentJumpSpeed * timeDelta;
-        const sustainJumpSpeed = this._jumpKeyHeldSinceJumpStart && this._timeSinceCurrentJumpStart < this._jumpSustainTime;
-        if (!sustainJumpSpeed) {
-          this._currentJumpSpeed -= this._gravity * timeDelta;
-        }
-        if (this._currentJumpSpeed < 0) {
-          this._currentJumpSpeed = 0;
-          this._jumping = false;
-        }
-      }
-      if (this._isOnFloor) {
-        if (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, this._ignoreTouchingEdges)) {
-          let oldY = object.getY();
-          let step = 0;
-          let stillInFloor = false;
-          do {
-            if (step >= Math.floor(Math.abs(requestedDeltaX * this._slopeClimbingFactor))) {
-              object.setY(object.getY() - (Math.abs(requestedDeltaX * this._slopeClimbingFactor) - step));
-              if (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, this._ignoreTouchingEdges)) {
-                stillInFloor = true;
-              }
-              break;
-            }
-            object.setY(object.getY() - 1);
-            step++;
-          } while (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, this._ignoreTouchingEdges));
-          if (stillInFloor) {
-            object.setY(oldY);
-            object.setX(oldX);
-          }
-        } else {
-          let oldY = object.getY();
-          const tentativeStartY = object.getY() + 1;
-          object.setY(this._roundCoordinates ? Math.round(tentativeStartY) : tentativeStartY);
-          let step = 0;
-          let noMoreOnFloor = false;
-          while (!this._isCollidingWith(this._potentialCollidingObjects)) {
-            if (step > Math.abs(requestedDeltaX * this._slopeClimbingFactor)) {
-              noMoreOnFloor = true;
-              break;
-            }
-            object.setY(object.getY() + 1);
-            step++;
-          }
-          if (noMoreOnFloor) {
-            object.setY(oldY);
-          } else {
-            object.setY(object.getY() - 1);
-          }
-        }
-      }
-      if (requestedDeltaY !== 0) {
+    }
+    _moveY() {
+      const object = this.owner;
+      if (this._requestedDeltaY !== 0) {
         let oldY = object.getY();
-        object.setY(object.getY() + requestedDeltaY);
-        while (requestedDeltaY < 0 && this._isCollidingWith(this._potentialCollidingObjects, null, true) || requestedDeltaY > 0 && this._isCollidingWithExcluding(this._potentialCollidingObjects, this._overlappedJumpThru)) {
-          this._jumping = false;
-          this._currentJumpSpeed = 0;
-          if (requestedDeltaY > 0 && object.getY() <= oldY || requestedDeltaY < 0 && object.getY() >= oldY) {
+        object.setY(object.getY() + this._requestedDeltaY);
+        while (this._requestedDeltaY < 0 && this._isCollidingWith(this._potentialCollidingObjects, null, true) || this._requestedDeltaY > 0 && this._isCollidingWithExcluding(this._potentialCollidingObjects, this._overlappedJumpThru)) {
+          if (this._state === this._jumping) {
+            this._setFalling();
+          }
+          if (this._requestedDeltaY > 0 && object.getY() <= oldY || this._requestedDeltaY < 0 && object.getY() >= oldY) {
             object.setY(oldY);
             break;
           }
-          object.setY(Math.floor(object.getY()) + (requestedDeltaY > 0 ? -1 : 1));
+          object.setY(Math.floor(object.getY()) + (this._requestedDeltaY > 0 ? -1 : 1));
         }
       }
-      this._updateOverlappedJumpThru();
-      if (!this._isOnLadder) {
+    }
+    _setFalling() {
+      this._state.leave();
+      this._state = this._falling;
+      this._falling.enter();
+    }
+    _setOnFloor(collidingPlatform) {
+      this._state.leave();
+      this._state = this._onFloor;
+      this._onFloor.enter(collidingPlatform);
+    }
+    _setJumping() {
+      this._state.leave();
+      const from = this._state;
+      this._state = this._jumping;
+      this._jumping.enter(from);
+    }
+    _setGrabbingPlatform(grabbedPlatform) {
+      this._state.leave();
+      this._state = this._grabbingPlatform;
+      this._grabbingPlatform.enter(grabbedPlatform);
+    }
+    _setOnLadder() {
+      this._state.leave();
+      this._state = this._onLadder;
+      this._onLadder.enter();
+    }
+    _checkTransitionOnLadder() {
+      if (this._ladderKey && this._isOverlappingLadder()) {
+        this._setOnLadder();
+      }
+    }
+    _checkTransitionJumping() {
+      if (this._canJump && this._jumpKey) {
+        this._setJumping();
+      }
+    }
+    _checkGrabPlatform() {
+      const object = this.owner;
+      let tryGrabbingPlatform = false;
+      object.setX(object.getX() + (this._requestedDeltaX > 0 ? this._xGrabTolerance : -this._xGrabTolerance));
+      let collidingPlatform = this._getCollidingPlatform();
+      if (collidingPlatform !== null && this._canGrab(collidingPlatform)) {
+        tryGrabbingPlatform = true;
+      }
+      object.setX(object.getX() + (this._requestedDeltaX > 0 ? -this._xGrabTolerance : this._xGrabTolerance));
+      if (tryGrabbingPlatform) {
         let oldY = object.getY();
-        object.setY(object.getY() + 1);
-        if (this._isOnFloor && gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, this._ignoreTouchingEdges)) {
-          this._floorLastX = this._floorPlatform.owner.getX();
-          this._floorLastY = this._floorPlatform.owner.getY();
-          this._releaseGrabbedPlatform();
+        object.setY(collidingPlatform.owner.getY() + collidingPlatform.getYGrabOffset() - this._yGrabOffset);
+        if (!this._isCollidingWith(this._potentialCollidingObjects, null, true)) {
+          this._setGrabbingPlatform(collidingPlatform);
+          this._requestedDeltaY = 0;
         } else {
-          const canLand = requestedDeltaY >= 0;
-          let collidingPlatform = this._getCollidingPlatform();
-          if (canLand && collidingPlatform !== null) {
-            this._isOnFloor = true;
-            this._canJump = true;
-            this._jumping = false;
-            this._currentJumpSpeed = 0;
-            this._currentFallSpeed = 0;
-            this._floorPlatform = collidingPlatform;
-            this._floorLastX = this._floorPlatform.owner.getX();
-            this._floorLastY = this._floorPlatform.owner.getY();
-            this._releaseGrabbedPlatform();
-          } else {
-            this._canJump = false;
-            this._isOnFloor = false;
-            this._floorPlatform = null;
-          }
+          object.setY(oldY);
         }
-        object.setY(oldY);
       }
-      this._leftKey = false;
-      this._rightKey = false;
-      this._ladderKey = false;
-      this._upKey = false;
-      this._downKey = false;
-      this._releaseKey = false;
-      this._jumpKey = false;
-      this._hasReallyMoved = Math.abs(object.getX() - oldX) >= 1;
     }
-    doStepPostEvents(runtimeScene) {
+    _checkTransitionOnFloorOrFalling() {
+      const object = this.owner;
+      let oldY = object.getY();
+      object.setY(object.getY() + 1);
+      if (this._state === this._onFloor && gdjs2.RuntimeObject.collisionTest(object, this._onFloor.getFloorPlatform().owner, this._ignoreTouchingEdges)) {
+        this._onFloor.updateFloorPosition();
+      } else {
+        const canLand = this._requestedDeltaY >= 0;
+        let collidingPlatform = this._getCollidingPlatform();
+        if (canLand && collidingPlatform !== null) {
+          this._setOnFloor(collidingPlatform);
+        } else if (this._state === this._onFloor) {
+          this._setFalling();
+        }
+      }
+      object.setY(oldY);
     }
-    _canGrab(platform, requestedDeltaY) {
-      const y1 = this.owner.getY() + this._yGrabOffset;
-      const y2 = this.owner.getY() + this._yGrabOffset + requestedDeltaY;
+    _fall(timeDelta) {
+      this._currentFallSpeed += this._gravity * timeDelta;
+      if (this._currentFallSpeed > this._maxFallingSpeed) {
+        this._currentFallSpeed = this._maxFallingSpeed;
+      }
+      this._requestedDeltaY += this._currentFallSpeed * timeDelta;
+      this._requestedDeltaY = Math.min(this._requestedDeltaY, this._maxFallingSpeed * timeDelta);
+    }
+    _canGrab(platform) {
+      const y1 = this.owner.getY() + this._yGrabOffset - this._lastDeltaY;
+      const y2 = this.owner.getY() + this._yGrabOffset;
       const platformY = platform.owner.getY() + platform.getYGrabOffset();
       return platform.canBeGrabbed() && (y1 < platformY && platformY < y2 || y2 < platformY && platformY < y1);
     }
     _releaseGrabbedPlatform() {
-      this._isGrabbingPlatform = false;
-      this._grabbedPlatform = null;
+      if (this._state === this._grabbingPlatform) {
+        this._setFalling();
+      }
     }
     _isCollidingWith(candidates, exceptThisOne, excludeJumpThrus) {
       excludeJumpThrus = !!excludeJumpThrus;
@@ -503,7 +441,7 @@ var gdjs;
       return this._currentSpeed;
     }
     getCurrentJumpSpeed() {
-      return this._currentJumpSpeed;
+      return this._jumping.getCurrentJumpSpeed();
     }
     canGrabPlatforms() {
       return this._canGrabPlatforms;
@@ -540,7 +478,7 @@ var gdjs;
         return;
       }
       this._slopeMaxAngle = slopeMaxAngle;
-      if (slopeMaxAngle == 45) {
+      if (slopeMaxAngle === 45) {
         this._slopeClimbingFactor = 1;
       } else {
         this._slopeClimbingFactor = Math.tan(slopeMaxAngle * 3.1415926 / 180);
@@ -580,25 +518,292 @@ var gdjs;
       this._releaseKey = true;
     }
     isOnFloor() {
-      return this._isOnFloor;
+      return this._state === this._onFloor;
     }
     isOnLadder() {
-      return this._isOnLadder;
+      return this._state === this._onLadder;
     }
     isJumping() {
-      return this._jumping;
+      return this._state === this._jumping;
     }
     isGrabbingPlatform() {
-      return this._isGrabbingPlatform;
+      return this._state === this._grabbingPlatform;
+    }
+    isFallingWithoutJumping() {
+      return this._state === this._falling;
     }
     isFalling() {
-      return !this._isOnFloor && !this._isGrabbingPlatform && !this._isOnLadder && (!this._jumping || this._currentJumpSpeed < this._currentFallSpeed);
+      return this._state === this._falling || this._state === this._jumping && this._currentFallSpeed > this._jumping.getCurrentJumpSpeed();
     }
     isMoving() {
-      return this._hasReallyMoved && this._currentSpeed !== 0 || this._currentJumpSpeed !== 0 || this._currentFallSpeed !== 0;
+      return this._hasReallyMoved && this._currentSpeed !== 0 || this._jumping.getCurrentJumpSpeed() !== 0 || this._currentFallSpeed !== 0;
     }
   }
   gdjs2.PlatformerObjectRuntimeBehavior = PlatformerObjectRuntimeBehavior;
+  class OnFloor {
+    constructor(behavior) {
+      this._floorPlatform = null;
+      this._floorLastX = 0;
+      this._floorLastY = 0;
+      this._oldHeight = 0;
+      this._behavior = behavior;
+    }
+    getFloorPlatform() {
+      return this._floorPlatform;
+    }
+    enter(floorPlatform) {
+      this._floorPlatform = floorPlatform;
+      this.updateFloorPosition();
+      this._behavior._canJump = true;
+      this._behavior._currentFallSpeed = 0;
+    }
+    leave() {
+      this._floorPlatform = null;
+    }
+    updateFloorPosition() {
+      this._floorLastX = this._floorPlatform.owner.getX();
+      this._floorLastY = this._floorPlatform.owner.getY();
+    }
+    beforeUpdatingObstacles() {
+      const object = this._behavior.owner;
+      if (this._oldHeight !== object.getHeight()) {
+        object.setY(this._floorLastY - object.getHeight() + (object.getY() - object.getDrawableY()) - 1);
+      }
+    }
+    checkTransitionBeforeX() {
+      const behavior = this._behavior;
+      if (!behavior._isIn(behavior._potentialCollidingObjects, this._floorPlatform.owner.id)) {
+        behavior._setFalling();
+      }
+    }
+    beforeMovingX() {
+      const behavior = this._behavior;
+      behavior._requestedDeltaX += this._floorPlatform.owner.getX() - this._floorLastX;
+      behavior._requestedDeltaY += this._floorPlatform.owner.getY() - this._floorLastY;
+    }
+    checkTransitionBeforeY(timeDelta) {
+      const behavior = this._behavior;
+      behavior._checkTransitionOnLadder();
+      behavior._checkTransitionJumping();
+    }
+    beforeMovingY(timeDelta, oldX) {
+      const behavior = this._behavior;
+      const object = behavior.owner;
+      if (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, behavior._ignoreTouchingEdges)) {
+        let oldY = object.getY();
+        let step = 0;
+        let stillInFloor = false;
+        do {
+          if (step >= Math.floor(Math.abs(behavior._requestedDeltaX * behavior._slopeClimbingFactor))) {
+            object.setY(object.getY() - (Math.abs(behavior._requestedDeltaX * behavior._slopeClimbingFactor) - step));
+            if (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, behavior._ignoreTouchingEdges)) {
+              stillInFloor = true;
+            }
+            break;
+          }
+          object.setY(object.getY() - 1);
+          step++;
+        } while (gdjs2.RuntimeObject.collisionTest(object, this._floorPlatform.owner, behavior._ignoreTouchingEdges));
+        if (stillInFloor) {
+          object.setY(oldY);
+          object.setX(oldX);
+        }
+      } else {
+        let oldY = object.getY();
+        const tentativeStartY = object.getY() + 1;
+        object.setY(behavior._roundCoordinates ? Math.round(tentativeStartY) : tentativeStartY);
+        let step = 0;
+        let noMoreOnFloor = false;
+        while (!behavior._isCollidingWith(behavior._potentialCollidingObjects)) {
+          if (step > Math.abs(behavior._requestedDeltaX * behavior._slopeClimbingFactor)) {
+            noMoreOnFloor = true;
+            break;
+          }
+          object.setY(object.getY() + 1);
+          step++;
+        }
+        if (noMoreOnFloor) {
+          object.setY(oldY);
+        } else {
+          object.setY(object.getY() - 1);
+        }
+      }
+    }
+    toString() {
+      return "OnFloor";
+    }
+  }
+  class Falling {
+    constructor(behavior) {
+      this._behavior = behavior;
+    }
+    enter() {
+      this._behavior._canJump = false;
+    }
+    leave() {
+    }
+    beforeUpdatingObstacles() {
+    }
+    checkTransitionBeforeX() {
+    }
+    beforeMovingX() {
+    }
+    checkTransitionBeforeY(timeDelta) {
+      const behavior = this._behavior;
+      behavior._checkTransitionOnLadder();
+      behavior._checkTransitionJumping();
+      if (behavior._canGrabPlatforms && behavior._requestedDeltaX !== 0) {
+        behavior._checkGrabPlatform();
+      }
+    }
+    beforeMovingY(timeDelta, oldX) {
+      this._behavior._fall(timeDelta);
+    }
+    toString() {
+      return "Falling";
+    }
+  }
+  class Jumping {
+    constructor(behavior) {
+      this._currentJumpSpeed = 0;
+      this._timeSinceCurrentJumpStart = 0;
+      this._jumpKeyHeldSinceJumpStart = false;
+      this._jumpingFirstDelta = false;
+      this._behavior = behavior;
+    }
+    getCurrentJumpSpeed() {
+      return this._currentJumpSpeed;
+    }
+    enter(from) {
+      const behavior = this._behavior;
+      this._timeSinceCurrentJumpStart = 0;
+      this._jumpKeyHeldSinceJumpStart = true;
+      if (from !== behavior._jumping && from !== behavior._falling) {
+        this._jumpingFirstDelta = true;
+      }
+      behavior._canJump = false;
+      this._currentJumpSpeed = behavior._jumpSpeed;
+      behavior._currentFallSpeed = 0;
+    }
+    leave() {
+      this._currentJumpSpeed = 0;
+    }
+    beforeUpdatingObstacles() {
+    }
+    checkTransitionBeforeX() {
+    }
+    beforeMovingX() {
+    }
+    checkTransitionBeforeY(timeDelta) {
+      const behavior = this._behavior;
+      behavior._checkTransitionOnLadder();
+      behavior._checkTransitionJumping();
+      if (behavior._canGrabPlatforms && behavior._requestedDeltaX !== 0 && behavior._lastDeltaY >= 0) {
+        behavior._checkGrabPlatform();
+      }
+    }
+    beforeMovingY(timeDelta, oldX) {
+      const behavior = this._behavior;
+      if (!this._jumpingFirstDelta) {
+        behavior._fall(timeDelta);
+      }
+      this._jumpingFirstDelta = false;
+      if (!behavior._jumpKey) {
+        this._jumpKeyHeldSinceJumpStart = false;
+      }
+      this._timeSinceCurrentJumpStart += timeDelta;
+      behavior._requestedDeltaY -= this._currentJumpSpeed * timeDelta;
+      const sustainJumpSpeed = this._jumpKeyHeldSinceJumpStart && this._timeSinceCurrentJumpStart < behavior._jumpSustainTime;
+      if (!sustainJumpSpeed) {
+        this._currentJumpSpeed -= behavior._gravity * timeDelta;
+      }
+      if (this._currentJumpSpeed < 0) {
+        behavior._setFalling();
+      }
+    }
+    toString() {
+      return "Jumping";
+    }
+  }
+  class GrabbingPlatform {
+    constructor(behavior) {
+      this._grabbedPlatform = null;
+      this._behavior = behavior;
+    }
+    enter(grabbedPlatform) {
+      this._grabbedPlatform = grabbedPlatform;
+      this._behavior._canJump = true;
+      this._behavior._currentFallSpeed = 0;
+    }
+    leave() {
+      this._grabbedPlatform = null;
+    }
+    beforeUpdatingObstacles() {
+    }
+    checkTransitionBeforeX() {
+      const behavior = this._behavior;
+      if (!behavior._isIn(behavior._potentialCollidingObjects, this._grabbedPlatform.owner.id)) {
+        behavior._releaseGrabbedPlatform();
+      }
+    }
+    beforeMovingX() {
+      const behavior = this._behavior;
+      behavior._requestedDeltaX = this._grabbedPlatform.owner.getX() - this._grabbedPlatformLastX;
+      behavior._requestedDeltaY = this._grabbedPlatform.owner.getY() - this._grabbedPlatformLastY;
+    }
+    checkTransitionBeforeY(timeDelta) {
+      const behavior = this._behavior;
+      behavior._checkTransitionOnLadder();
+      if (behavior._releaseKey) {
+        behavior._releaseGrabbedPlatform();
+      }
+      behavior._checkTransitionJumping();
+    }
+    beforeMovingY(timeDelta, oldX) {
+      const behavior = this._behavior;
+      this._grabbedPlatformLastX = this._grabbedPlatform.owner.getX();
+      this._grabbedPlatformLastY = this._grabbedPlatform.owner.getY();
+    }
+    toString() {
+      return "GrabbingPlatform";
+    }
+  }
+  class OnLadder {
+    constructor(behavior) {
+      this._behavior = behavior;
+    }
+    enter() {
+      this._behavior._canJump = true;
+      this._behavior._currentFallSpeed = 0;
+    }
+    leave() {
+    }
+    beforeUpdatingObstacles() {
+    }
+    checkTransitionBeforeX() {
+    }
+    beforeMovingX() {
+    }
+    checkTransitionBeforeY(timeDelta) {
+      const behavior = this._behavior;
+      if (!behavior._isOverlappingLadder()) {
+        behavior._setFalling();
+      }
+      behavior._checkTransitionJumping();
+    }
+    beforeMovingY(timeDelta, oldX) {
+      const behavior = this._behavior;
+      if (behavior._upKey) {
+        behavior._requestedDeltaY -= behavior._ladderClimbingSpeed * timeDelta;
+      }
+      if (behavior._downKey) {
+        behavior._requestedDeltaY += behavior._ladderClimbingSpeed * timeDelta;
+      }
+    }
+    toString() {
+      return "OnLadder";
+    }
+  }
   gdjs2.registerBehavior("PlatformBehavior::PlatformerObjectBehavior", gdjs2.PlatformerObjectRuntimeBehavior);
 })(gdjs || (gdjs = {}));
 //# sourceMappingURL=platformerobjectruntimebehavior.js.map

@@ -89,12 +89,18 @@ var gdjs;
       return this._height;
     }
     setWidth(width) {
+      if (this._width === width)
+        return;
       this._width = width;
       this._renderer.updateWidth();
+      this.hitBoxesDirty = true;
     }
     setHeight(height) {
+      if (this._height === height)
+        return;
       this._height = height;
       this._renderer.updateHeight();
+      this.hitBoxesDirty = true;
     }
     setOpacity(opacity) {
       if (opacity < 0) {
@@ -114,6 +120,25 @@ var gdjs;
     }
     getColor() {
       return this._renderer.getColor();
+    }
+    getScale() {
+      return (this.getScaleX() + this.getScaleY()) / 2;
+    }
+    getScaleX() {
+      return this._width / this._renderer.getTextureWidth();
+    }
+    getScaleY() {
+      return this._height / this._renderer.getTextureHeight();
+    }
+    setScale(newScale) {
+      this.setWidth(this._renderer.getTextureWidth() * newScale);
+      this.setHeight(this._renderer.getTextureHeight() * newScale);
+    }
+    setScaleX(newScale) {
+      this.setWidth(this._renderer.getTextureWidth() * newScale);
+    }
+    setScaleY(newScale) {
+      this.setHeight(this._renderer.getTextureHeight() * newScale);
     }
   }
   gdjs2.PanelSpriteRuntimeObject = PanelSpriteRuntimeObject;

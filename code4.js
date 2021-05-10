@@ -32,22 +32,7 @@ gdjs.Game_32OverCode.condition3IsTrue_1 = {val:false};
 gdjs.Game_32OverCode.condition4IsTrue_1 = {val:false};
 
 
-gdjs.Game_32OverCode.eventsList0 = function(runtimeScene) {
-
-{
-
-
-gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
-{
-gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(4)) == 1;
-}if (gdjs.Game_32OverCode.condition0IsTrue_0.val) {
-{gdjs.evtTools.sound.setMusicOnChannelVolume(runtimeScene, 1, 0);
-}}
-
-}
-
-
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.eventsList1 = function(runtimeScene) {
+gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.eventsList0 = function(runtimeScene) {
 
 {
 
@@ -62,7 +47,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.eventsList2 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDmainMenuButtonObjects1Objects = Hashtable.newFrom({"mainMenuButton": gdjs.Game_32OverCode.GDmainMenuButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.eventsList1 = function(runtimeScene) {
 
 {
 
@@ -77,7 +62,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isMouseButtonR
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x759ab8 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDplayAgainButtonObjects1Objects = Hashtable.newFrom({"playAgainButton": gdjs.Game_32OverCode.GDplayAgainButtonObjects1});gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.userFunc0x8c4720 = function(runtimeScene) {
 "use strict";
 
 var db = firebase.database();
@@ -94,17 +79,17 @@ var data = {
 ref.push(data);
 
 };
-gdjs.Game_32OverCode.eventsList3 = function(runtimeScene) {
+gdjs.Game_32OverCode.eventsList2 = function(runtimeScene) {
 
 {
 
 
-gdjs.Game_32OverCode.userFunc0x759ab8(runtimeScene);
+gdjs.Game_32OverCode.userFunc0x8c4720(runtimeScene);
 
 }
 
 
-};gdjs.Game_32OverCode.eventsList4 = function(runtimeScene) {
+};gdjs.Game_32OverCode.eventsList3 = function(runtimeScene) {
 
 {
 
@@ -148,13 +133,13 @@ gdjs.copyArray(runtimeScene.getObjects("submittedLabel"), gdjs.Game_32OverCode.G
 }
 }
 { //Subevents
-gdjs.Game_32OverCode.eventsList3(runtimeScene);} //End of subevents
+gdjs.Game_32OverCode.eventsList2(runtimeScene);} //End of subevents
 }
 
 }
 
 
-};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.eventsList5 = function(runtimeScene) {
+};gdjs.Game_32OverCode.mapOfGDgdjs_46Game_9532OverCode_46GDsubmitScoreButtonObjects1Objects = Hashtable.newFrom({"submitScoreButton": gdjs.Game_32OverCode.GDsubmitScoreButtonObjects1});gdjs.Game_32OverCode.eventsList4 = function(runtimeScene) {
 
 {
 
@@ -175,7 +160,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.isKeyPressed(r
 }
 
 
-};gdjs.Game_32OverCode.eventsList6 = function(runtimeScene) {
+};gdjs.Game_32OverCode.eventsList5 = function(runtimeScene) {
 
 {
 
@@ -195,10 +180,20 @@ gdjs.copyArray(runtimeScene.getObjects("submittedLabel"), gdjs.Game_32OverCode.G
 }{for(var i = 0, len = gdjs.Game_32OverCode.GDsubmittedLabelObjects1.length ;i < len;++i) {
     gdjs.Game_32OverCode.GDsubmittedLabelObjects1[i].hide();
 }
+}}
+
 }
-{ //Subevents
-gdjs.Game_32OverCode.eventsList0(runtimeScene);} //End of subevents
-}
+
+
+{
+
+
+gdjs.Game_32OverCode.condition0IsTrue_0.val = false;
+{
+gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.common.getVariableNumber(runtimeScene.getGame().getVariables().getFromIndex(4)) == 1;
+}if (gdjs.Game_32OverCode.condition0IsTrue_0.val) {
+{gdjs.evtTools.sound.setMusicOnChannelVolume(runtimeScene, 1, 0);
+}}
 
 }
 
@@ -217,7 +212,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Game_32OverCode.eventsList1(runtimeScene);} //End of subevents
+gdjs.Game_32OverCode.eventsList0(runtimeScene);} //End of subevents
 }
 
 }
@@ -254,7 +249,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Game_32OverCode.eventsList2(runtimeScene);} //End of subevents
+gdjs.Game_32OverCode.eventsList1(runtimeScene);} //End of subevents
 }
 
 }
@@ -291,7 +286,7 @@ gdjs.Game_32OverCode.condition0IsTrue_0.val = gdjs.evtTools.input.cursorOnObject
 }
 }
 { //Subevents
-gdjs.Game_32OverCode.eventsList4(runtimeScene);} //End of subevents
+gdjs.Game_32OverCode.eventsList3(runtimeScene);} //End of subevents
 }
 
 }
@@ -370,7 +365,7 @@ gdjs.Game_32OverCode.conditionTrue_1.val = (gdjs.evtTools.string.strLen((( gdjs.
 }
 }
 { //Subevents
-gdjs.Game_32OverCode.eventsList5(runtimeScene);} //End of subevents
+gdjs.Game_32OverCode.eventsList4(runtimeScene);} //End of subevents
 }
 
 }
@@ -400,7 +395,7 @@ gdjs.Game_32OverCode.GDnameLabelObjects2.length = 0;
 gdjs.Game_32OverCode.GDsubmittedLabelObjects1.length = 0;
 gdjs.Game_32OverCode.GDsubmittedLabelObjects2.length = 0;
 
-gdjs.Game_32OverCode.eventsList6(runtimeScene);
+gdjs.Game_32OverCode.eventsList5(runtimeScene);
 return;
 
 }

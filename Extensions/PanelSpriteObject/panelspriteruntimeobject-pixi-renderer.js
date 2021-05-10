@@ -3,6 +3,8 @@ var gdjs;
   class PanelSpriteRuntimeObjectPixiRenderer {
     constructor(runtimeObject, runtimeScene, textureName, tiled) {
       this._wasRendered = false;
+      this._textureWidth = 0;
+      this._textureHeight = 0;
       this._object = runtimeObject;
       if (this._spritesContainer === void 0) {
         const texture = runtimeScene.getGame().getImageManager().getPIXITexture(textureName);
@@ -89,6 +91,8 @@ var gdjs;
     setTexture(textureName, runtimeScene) {
       const obj = this._object;
       const texture = runtimeScene.getGame().getImageManager().getPIXITexture(textureName);
+      this._textureWidth = texture.width;
+      this._textureHeight = texture.height;
       function makeInsideTexture(rect) {
         if (rect.width < 0) {
           rect.width = 0;
@@ -157,6 +161,12 @@ var gdjs;
     getColor() {
       const rgb = PIXI.utils.hex2rgb(this._centerSprite.tint);
       return Math.floor(rgb[0] * 255) + ";" + Math.floor(rgb[1] * 255) + ";" + Math.floor(rgb[2] * 255);
+    }
+    getTextureWidth() {
+      return this._textureWidth;
+    }
+    getTextureHeight() {
+      return this._textureHeight;
     }
   }
   gdjs2.PanelSpriteRuntimeObjectRenderer = PanelSpriteRuntimeObjectPixiRenderer;
